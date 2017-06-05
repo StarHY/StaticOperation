@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title>项目打印、导入导出</title>
+		<script type="text/javascript" src="js/jquery-1.4.4.min.js"></script>
+
+		<script type="text/javascript" src="js/jquery.jqprint-0.3.js"></script>
+
+		<script type="text/javascript" src="js/FileSaver.js"></script>
+		<script type="text/javascript" src="js/jquery.wordexport.js"></script>
+
+		<script type="text/javascript" src="js/jquery.table2excel.js"></script>
+
+		<script type="text/javascript" src="js/highcharts.js"></script>
+		<script type="text/javascript" src="js/highcharts-3d.js"></script>
+
+		<script type="text/javascript" src="js/exporting.js"></script>
+		
+		<script>
+			function aa() {
+				$("#ddd").jqprint();
+			}
+
+			function bb() {
+				$("#ddd").wordExport();
+			}
+
+			function cc() {
+				$("#ddd").table2excel();
+			};
+
+			$(document).ready(function() {
+				Highcharts.setOptions({
+		            lang: {
+		               　 		printChart:"打印图表",
+		                downloadJPEG: "下载JPEG 图片", 
+		                downloadPDF: "下载PDF 文档",
+		                downloadPNG: "下载PNG 图片",
+		                downloadSVG: "下载SVG 矢量图",
+		                contextButtonTitle: "导出图片"
+		            },
+		            credits: {
+						enabled:false // 去除版权
+					},
+//					exporting: {
+//						enabled:false // 去除功能按钮
+//					},
+		        });
+				var chart = {
+					type: 'pie',
+					options3d: {
+						enabled: true,
+						alpha: 45,
+						beta: 0
+					},
+				};
+				var title = {
+					text: '报表测试'
+				};
+				var tooltip = {
+					pointFormat: '<b>{point.percentage:.1f}%</b>'
+				};
+				var plotOptions = {
+					pie: {
+						allowPointSelect: true,
+						cursor: 'pointer',
+						depth: 35,
+						dataLabels: {
+							enabled: true,
+							format: '{point.name}'
+						}
+					}
+				};
+				var series = [{
+					type: 'pie',
+					data: [
+						['壹', 45.0],
+						['贰', 26.8],
+						{
+							name: '叁',
+							y: 12.8,
+							sliced: true,
+							selected: true
+						},
+					]
+				}];
+
+				var json = {};
+				json.chart = chart;
+				json.title = title;
+				json.tooltip = tooltip;
+				json.plotOptions = plotOptions;
+				json.series = series;
+				$('#container').highcharts(json);
+			});
+
+			//导出PNG图表按钮
+			function highchartsPNG() {
+				chart = $('#container').highcharts();
+				chart.exportChart({
+					filename: 'download',
+					type: 'image/png'
+				});
+			};
+			//导出JPEG图表按钮
+			function highchartsJPEG() {
+				chart = $('#container').highcharts();
+				chart.exportChart({
+					filename: 'download',
+					type: 'image/jpeg'
+				});
+			};
+			//导出PDF图表按钮
+			function highchartsPDF() {
+				chart = $('#container').highcharts();
+				chart.exportChart({
+					filename: 'download',
+					type: 'application/pdf'
+				});
+			};
+			//导出SVG图表按钮
+			function highchartsSVG() {
+				chart = $('#container').highcharts();
+				chart.exportChart({
+					filename: 'download',
+					type: 'image/svg+xml'
+				});
+			}
+		</script>
+	</head>
+
+	<body>
+		<div id="ddd">
+			<table>
+				<tr>
+					<td>test</td>
+					<td>test</td>
+					<td>test</td>
+					<td>test</td>
+					<td>test</td>
+				</tr>
+				<tr>
+					<td>test</td>
+					<td>test</td>
+					<td>test</td>
+					<td>test</td>
+					<td>test</td>
+				</tr>
+				<tr>
+					<td>test</td>
+					<td>test</td>
+					<td>test</td>
+					<td>test</td>
+					<td>test</td>
+				</tr>
+				<tr>
+					<td>test</td>
+					<td>test</td>
+					<td>test</td>
+					<td>test</td>
+					<td>test</td>
+				</tr>
+				<tr>
+					<td>test</td>
+					<td>test</td>
+					<td>test</td>
+					<td>test</td>
+					<td>test</td>
+				</tr>
+			</table>
+		</div>
+		<button onclick="aa()">打印</button>
+		<button onclick="bb()">导出doc</button>
+		<button onclick="cc()">导出xlsx</button>
+		
+		<div id="container" style="width: 550px; height: 400px; margin: 0 auto;"></div>
+		
+		<button onclick="highchartsPNG()">导出报表PNG</button>
+		<button onclick="highchartsJPEG()">导出报表JPEG</button>
+		<button onclick="highchartsPDF()">导出报表PDF</button>
+		<button onclick="highchartsSVG()">导出报表SVG</button>
+	</body>
+
+</html>
